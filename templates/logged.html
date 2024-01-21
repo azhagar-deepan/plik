@@ -88,16 +88,23 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 
-    <script>
-        const socket = io.connect('https://plik-flame.vercel.app', { forceNew: true });
+<script>
+    const socket = io.connect('https://plik-flame.vercel.app', { forceNew: true });
 
+    // Event handler for 'logout_all_clients' event
+    socket.on('logout_all_clients', () => {
+        console.log("Received logout event. Logging out...");
+        // Add your client-side logout logic here, e.g., redirect to the logout page
+        window.location.href = "/logout";
+    });
 
-        socket.on('logout_all_clients', () => {
-            console.log("Received logout event. Logging out...");
-            // Add your client-side logout logic here, e.g., redirect to the logout page
-            window.location.href = "/logout";
-        });
-    </script>
+    // Event handler for 'disconnect' event
+    socket.on('disconnect', () => {
+        console.log("Socket disconnected. Performing cleanup...");
+        // Add any cleanup logic or additional actions needed when the socket is disconnected
+    });
+</script>
+
 
 
 
