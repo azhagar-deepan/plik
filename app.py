@@ -369,13 +369,29 @@ def delete_all_users_page():
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 from flask_session import Session
+from flask_dynamo import DynamoSessionInterface
+from flask_dynamo import Dynamo
 
-app.config['SESSION_TYPE'] = 'filesystem'
+app.config['DYNAMO_TABLES'] = [
+    {
+        'TableName': 'sessions',
+        'KeySchema': [{'AttributeName': 'id', 'KeyType': 'HASH'}],
+        'AttributeDefinitions': [{'AttributeName': 'id', 'AttributeType': 'S'}],
+        'ProvisionedThroughput': {'ReadCapacityUnits': 5, 'WriteCapacityUnits': 5}
+    }
+]
+
+dynamo = Dynamo(app)
+
+
+app.config['SESSION_TYPE'] = 'dynamo'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_KEY_PREFIX'] = 'plik'
 
 Session(app)
+app.session_interface = DynamoSessionInterface(dynamo, 'sessions')
+
 
 
 
