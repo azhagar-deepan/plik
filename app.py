@@ -366,10 +366,21 @@ def submit_vote_socketio():
 @app.route("/delete_all_users_page")
 def delete_all_users_page():
     return render_template("delete_all_users.html")
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+from flask_session import Session
+
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_KEY_PREFIX'] = 'plik'
+
+Session(app)
+
 
 
 # Initialize SocketIO
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="https://plik-flame.vercel.app")
 
 
 def delete_all_users(conn):
