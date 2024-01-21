@@ -369,7 +369,7 @@ def delete_all_users_page():
 
 
 # Initialize SocketIO
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 def delete_all_users(conn):
@@ -396,6 +396,12 @@ def delete_all_users(conn):
     finally:
         # Set autocommit back to True to end the transaction
         conn.autocommit = True
+
+@socketio.on('logout_all_clients', namespace='/')
+def handle_logout_all_clients():
+    # Logic for handling the 'logout_all_clients' event
+    print("Received logout_all_clients event. Broadcasting to clients.")
+    socketio.emit('logout_all_clients', namespace='/')
 
 
 @app.route("/delete_all_users", methods=["GET", "POST"])
@@ -469,3 +475,5 @@ def close_connection(exception=None):
         cur.close()
 
 
+if __name__ == '__main__':
+    socketio.run(app)
