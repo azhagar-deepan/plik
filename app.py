@@ -19,7 +19,7 @@ from psycopg2 import extras  # Add this line
 
 app = Flask(__name__)
 CORS(app,resources={r"/*": {"origins": "https://plik-flame.vercel.app/"}})
-app.secret_key = "buTTerfly@23"
+#app.secret_key = "buTTerfly@23"
 
 """
 DB_NAME = "postgres"
@@ -368,10 +368,19 @@ def delete_all_users_page():
     return render_template("delete_all_users.html")
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
+
 from flask_session import Session
 from flask_dynamo import Dynamo
+from flask_cors import CORS
+import os
 
-# Configure Flask-Dynamo for DynamoDB
+app = Flask(__name__)
+
+# Set the secret key before initializing the Session extension
+app.secret_key = os.urandom(24)
+
+# Configure Flask-Session to use DynamoDB
+dynamo = Dynamo(app)
 app.config['DYNAMO_TABLES'] = [
     {
         'TableName': 'sessions',
@@ -380,20 +389,16 @@ app.config['DYNAMO_TABLES'] = [
         'ProvisionedThroughput': {'ReadCapacityUnits': 5, 'WriteCapacityUnits': 5}
     }
 ]
-
-dynamo = Dynamo(app)
-
-# Configure Flask-Session to use DynamoDB
 app.config['SESSION_TYPE'] = 'dynamo'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_KEY_PREFIX'] = 'plik'
-app.config['SECRET_KEY'] = "buTTerfly@23"
-
 Session(app)
 
 # Initialize SocketIO
 socketio = SocketIO(app, cors_allowed_origins="https://plik-flame.vercel.app")
+
+# Other parts of your application...
 
 def delete_all_users(conn):
     try:
