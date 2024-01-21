@@ -36,7 +36,7 @@ DB_USER = "default"
 DB_PASS = "z7Hod5jFraZU"
 DB_HOST = f"{end_point_ID}.us-east-1.postgres.vercel-storage.com"
 DB_PORT = "5432"
-db_uri = "postgres://default:fU0Jvn4pbQxL@ep-twilight-frost-43648729.us-east-1.postgres.vercel-storage.com:5432/verceldb?sslmode=require&options=endpoint%3Dep-twilight-frost-43648729-pooler"
+db_uri = "postgres://default:4P9oyZKdhgav@ep-proud-meadow-45284793.us-east-1.postgres.vercel-storage.com:5432/verceldb?sslmode=require&options=endpoint%3Dep-proud-meadow-45284793-pooler"
 
 
 global conn
