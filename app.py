@@ -18,8 +18,8 @@ from traceback import format_exc
 from psycopg2 import extras  # Add this line
 
 app = Flask(__name__)
-CORS(app,resources={r"/*": {"origins": "https://plik-flame.vercel.app/"}})
-#app.secret_key = "buTTerfly@23"
+CORS(app,resources={r"/*": {"origins": "https://poll-gtp.vercel.app"}})
+app.secret_key = "buTTerfly@23"
 
 """
 DB_NAME = "postgres"
@@ -366,39 +366,11 @@ def submit_vote_socketio():
 @app.route("/delete_all_users_page")
 def delete_all_users_page():
     return render_template("delete_all_users.html")
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
-
-from flask_session import Session
-from flask_dynamo import Dynamo
-from flask_cors import CORS
-import os
-
-app = Flask(__name__)
-
-# Set the secret key before initializing the Session extension
-app.secret_key = os.urandom(24)
-
-# Configure Flask-Session to use DynamoDB
-dynamo = Dynamo(app)
-app.config['DYNAMO_TABLES'] = [
-    {
-        'TableName': 'sessions',
-        'KeySchema': [{'AttributeName': 'id', 'KeyType': 'HASH'}],
-        'AttributeDefinitions': [{'AttributeName': 'id', 'AttributeType': 'S'}],
-        'ProvisionedThroughput': {'ReadCapacityUnits': 5, 'WriteCapacityUnits': 5}
-    }
-]
-app.config['SESSION_TYPE'] = 'dynamo'
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_KEY_PREFIX'] = 'plik'
-Session(app)
 
 # Initialize SocketIO
-socketio = SocketIO(app, cors_allowed_origins="https://plik-flame.vercel.app")
+socketio = SocketIO(app)
 
-# Other parts of your application...
 
 def delete_all_users(conn):
     try:
@@ -424,12 +396,6 @@ def delete_all_users(conn):
     finally:
         # Set autocommit back to True to end the transaction
         conn.autocommit = True
-
-@socketio.on('logout_all_clients', namespace='/')
-def handle_logout_all_clients():
-    # Logic for handling the 'logout_all_clients' event
-    print("Received logout_all_clients event. Broadcasting to clients.")
-    socketio.emit('logout_all_clients', namespace='/')
 
 
 @app.route("/delete_all_users", methods=["GET", "POST"])
@@ -502,6 +468,3 @@ def close_connection(exception=None):
     if cur is not None:
         cur.close()
 
-
-if __name__ == '__main__':
-    socketio.run(app)
