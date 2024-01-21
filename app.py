@@ -388,6 +388,7 @@ app.config['SESSION_TYPE'] = 'dynamo'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_KEY_PREFIX'] = 'plik'
+app.secret_key = "buTTerfly@23"
 
 Session(app)
 
