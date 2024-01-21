@@ -369,9 +369,9 @@ def delete_all_users_page():
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 from flask_session import Session
-from flask_dynamo import DynamoSessionInterface
 from flask_dynamo import Dynamo
 
+# Configure Flask-Dynamo for DynamoDB
 app.config['DYNAMO_TABLES'] = [
     {
         'TableName': 'sessions',
@@ -383,21 +383,16 @@ app.config['DYNAMO_TABLES'] = [
 
 dynamo = Dynamo(app)
 
-
+# Configure Flask-Session to use DynamoDB
 app.config['SESSION_TYPE'] = 'dynamo'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_KEY_PREFIX'] = 'plik'
 
 Session(app)
-app.session_interface = DynamoSessionInterface(dynamo, 'sessions')
-
-
-
 
 # Initialize SocketIO
 socketio = SocketIO(app, cors_allowed_origins="https://plik-flame.vercel.app")
-
 
 def delete_all_users(conn):
     try:
