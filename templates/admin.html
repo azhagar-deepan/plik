@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+        }
+
+        .logout-link {
+            text-decoration: none;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        form {
+            width: 100%;
+            max-width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Style for "Need Help" button */
+        .help-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #eb2d3a;
+            /* Color specified */
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+            /* Added some top margin for spacing */
+        }
+
+        /* Style for new buttons */
+        .admin-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <form id="adminForm">
+        <h1>Admin Actions</h1>
+        <button class="admin-button" onclick="performAction('/new_task');" type="button">New Task</button>
+        <button class="admin-button" onclick="performAction('/delete_all_users');" type="button">Remove all
+            users</button>
+        <button class="admin-button" onclick="clearAllHelpRequests();" type="button">Clear all help requests</button>
+    </form>
+
+    <script>
+        async function performAction(endpoint) {
+            try {
+                const response = await fetch(endpoint, { method: 'GET' });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log(result.message);
+                } else {
+                    const error = await response.json();
+                    console.error(`Error: ${error.error}`);
+                }
+            } catch (error) {
+                console.error(`Fetch error: ${error}`);
+            }
+        }
+
+        async function clearAllHelpRequests() {
+            try {
+                const response = await fetch('/clear_all_help_requests', { method: 'DELETE' });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log(result.message);
+                    // You can perform additional actions here if needed
+                } else {
+                    const error = await response.json();
+                    console.error(`Error: ${error.error}`);
+                }
+            } catch (error) {
+                console.error(`Fetch error: ${error}`);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
