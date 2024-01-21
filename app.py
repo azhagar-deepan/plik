@@ -18,7 +18,7 @@ from traceback import format_exc
 from psycopg2 import extras  # Add this line
 
 app = Flask(__name__)
-CORS(app,resources={r"/*": {"origins": "https://poll-gtp.vercel.app"}})
+CORS(app,resources={r"/*": {"origins": "https://plik-flame.vercel.app/"}})
 app.secret_key = "buTTerfly@23"
 
 """
