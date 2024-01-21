@@ -94,8 +94,12 @@
     // Event handler for 'logout_all_clients' event
     socket.on('logout_all_clients', () => {
         console.log("Received logout event. Logging out...");
-        // Add your client-side logout logic here, e.g., redirect to the logout page
-        window.location.href = "/logout";
+
+        // Add a delay (e.g., 500 milliseconds) before redirecting
+        setTimeout(() => {
+            // Add your client-side logout logic here, e.g., redirect to the logout page
+            window.location.href = "/logout";
+        }, 500);
     });
 
     // Event handler for 'disconnect' event
