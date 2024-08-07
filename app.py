@@ -301,8 +301,11 @@ def admin():
 def logout():
     username = session.get("username")
     if username:
-        execute_query('DELETE FROM "user" WHERE username = %s', (username,))
-        session.pop("username", None)
+        try:
+            execute_query('DELETE FROM "user" WHERE username = %s', (username,))
+        except:
+            print("User not in table")
+    session.pop("username", None)
     return redirect(url_for("home"))
 
 @app.route("/graph")
