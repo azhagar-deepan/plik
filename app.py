@@ -299,12 +299,17 @@ def admin():
 
 @app.route("/logout")
 def logout():
-    username = session.get("username")
-    if username:
-        try:
-            execute_query(f'DELETE FROM "user" WHERE username = {username}')
-        except:
-            print("User not in table")
+    current_username = session.get("username")
+    query_delete_user = """DELETE FROM "user" WHERE username = %s"""
+    try:
+        # Create a new connection
+        with psycopg2.connect(db_uri) as conn:
+            # Open a new cursor using the connection
+            with conn.cursor() as cur:
+                cur.execute(query_update_vote, (current_username,))
+                conn.commit()  # Commit changes within the same context
+    except:
+        print("User not in table")
     session.pop("username", None)
     return redirect(url_for("home"))
 
