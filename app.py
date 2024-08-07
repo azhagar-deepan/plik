@@ -306,7 +306,7 @@ def logout():
         with psycopg2.connect(db_uri) as conn:
             # Open a new cursor using the connection
             with conn.cursor() as cur:
-                cur.execute(query_update_vote, (current_username,))
+                cur.execute(query_delete_user, (current_username,))
                 conn.commit()  # Commit changes within the same context
     except:
         print("User not in table")
