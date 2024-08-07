@@ -302,7 +302,7 @@ def logout():
     username = session.get("username")
     if username:
         try:
-            execute_query('DELETE FROM "user" WHERE username = %s', (username,))
+            execute_query(f'DELETE FROM "user" WHERE username = {username}')
         except:
             print("User not in table")
     session.pop("username", None)
