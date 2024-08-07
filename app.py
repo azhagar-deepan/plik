@@ -299,9 +299,15 @@ def admin():
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
-    return redirect(url_for("home"))
-
+    username = session.get("username")
+        if username:
+            try:
+                execute_query('DELETE FROM "user" WHERE username = %s', (username,))
+                session.pop("username", None)
+            except Exception as e:
+                print(f"Error: {e}")
+                return jsonify({"error": "Internal Server Error"}), 500
+        return redirect(url_for("home"))
 
 @app.route("/graph")
 def graph():
